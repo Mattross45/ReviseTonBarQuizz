@@ -54,8 +54,14 @@ export function extractFactsFromWikipediaPage(
   const eventsTitlePararaph = paragraphs.findIndex(
     (element) => element === "Événements"
   );
-  const factParagraph = paragraphs[eventsTitlePararaph + 1];
-  const factsWithDates = factParagraph.split("\n");
+  const cultureTitlePararaph = paragraphs.findIndex(
+    (element) => element === "Art, culture et religion"
+  );
+  const factParagraphs = paragraphs
+    .splice(eventsTitlePararaph + 1, cultureTitlePararaph - 1)
+    .join("\n");
+
+  const factsWithDates = factParagraphs.split("\n");
   const facts = factsWithDates
     .filter((factWithDate) => factWithDate.includes(":"))
     .map((factWithDate) => {
