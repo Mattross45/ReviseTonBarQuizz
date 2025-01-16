@@ -7,9 +7,9 @@ const USER_AGENT = "https://github.com/Mattross45/ReviseTonBarQuizz";
 const wikipediaResponseShema = z.object({
   query: z.object({
     pages: z.record(
-      z.string(),
+      z.coerce.number(),
       z.object({
-        pageid: z.string(),
+        pageid: z.coerce.number(),
         title: z.string(),
         extract: z.string(),
       })
@@ -34,7 +34,7 @@ export async function fetchWikipediaPage(
   const data = await response.json();
   const wikipediaResponse = wikipediaResponseShema.parse(data);
 
-  const pageId = wikipediaResponse.query.pages[0].pageid;
+  const pageId = Object.values(wikipediaResponse.query.pages)[0].pageid;
 
   const wikipediaPage = {
     title: wikipediaResponse.query.pages[pageId].title,
