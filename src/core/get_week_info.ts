@@ -6,9 +6,9 @@ const USER_AGENT = "https://github.com/Mattross45/ReviseTonBarQuizz";
 const wikipediaResponseShema = z.object({
   query: z.object({
     pages: z.record(
-      z.coerce.number(),
+      z.string(),
       z.object({
-        pageid: z.coerce.number(),
+        pageid: z.string(),
         title: z.string(),
         extract: z.string(),
       })
@@ -36,26 +36,35 @@ export async function fetch_page_date(
     body: undefined,
   };
 
-  try {
-    const response = await fetch(url, options);
-    const data = await response.json();
-    console.log(data);
-    const wikipediaPage = wikipediaResponseShema.parse(data);
-    console.log(wikipediaPage);
-    return wikipediaPage;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const response = await fetch(url, options);
+  const data = await response.json();
+  const wikipediaPage = wikipediaResponseShema.parse(data);
+  return wikipediaPage;
 }
 
 export type Fact = {
-  date: number;
-  fact: string;
+  date: string;
+  factContent: string;
 };
 
 export function extractFactsFromWikipediaPage(
   page: WikipediaPage
 ): Array<Fact> {
-  return [];
+  const paragraphs = page.content.split("\n\n\n");
+  const eventsTitlePararaph = paragraphs.findIndex(
+    (element) => element === "Événements"
+  );
+  const factParagraph = paragraphs[eventsTitlePararaph + 1];
+  const factsWithDates = factParagraph.split("\n");
+  const facts = factsWithDates
+    .filter((factWithDate) => factWithDate.includes(":"))
+    .map((factWithDate) => {
+      const splitFactWithDates = factWithDate.split(":");
+      return {
+        date: splitFactWithDates[0].trim(),
+        factContent: splitFactWithDates[1].trim(),
+      };
+    });
+
+  return facts;
 }
