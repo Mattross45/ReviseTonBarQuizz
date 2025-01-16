@@ -1,9 +1,8 @@
 import { z } from "zod";
+import { WikipediaPage } from "./get_week_info";
 
 const API_URL = "http://fr.wikipedia.org/w/api.php";
 const USER_AGENT = "https://github.com/Mattross45/ReviseTonBarQuizz";
-
-type WikipediaResponse = z.infer<typeof wikipediaResponseShema>;
 
 const wikipediaResponseShema = z.object({
   query: z.object({
@@ -18,9 +17,9 @@ const wikipediaResponseShema = z.object({
   }),
 });
 
-export async function fetch_page_date(
+export async function fetchWikipediaPage(
   title: string
-): Promise<WikipediaResponse> {
+): Promise<WikipediaPage> {
   const url = `${API_URL}?action=query&titles=${title}&format=json&explaintext=1&exsectionformat=plain&prop=extracts`;
   const options = {
     method: "GET",
@@ -33,6 +32,14 @@ export async function fetch_page_date(
 
   const response = await fetch(url, options);
   const data = await response.json();
-  const wikipediaPage = wikipediaResponseShema.parse(data);
+  const wikipediaResponse = wikipediaResponseShema.parse(data);
+
+  const pageId = wikipediaResponse.query.pages[0].pageid;
+
+  const wikipediaPage = {
+    title: wikipediaResponse.query.pages[pageId].title,
+    content: wikipediaResponse.query.pages[pageId].extract,
+  };
+
   return wikipediaPage;
 }
