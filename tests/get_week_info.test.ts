@@ -17,7 +17,7 @@ it("should extract one fact from a wikipedia page with one fact from the 'Évén
   const wikipediaPage: WikipediaPage = {
     title: "one fact page",
     content:
-      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion",
+      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion\nother stuff",
   };
 
   const facts: Array<Fact> = await extractFactsFromWikipediaPage(wikipediaPage);
@@ -34,7 +34,7 @@ it("should extract multiple facts from a wikipedia page from the 'Événement' p
   const wikipediaPage: WikipediaPage = {
     title: "one fact page",
     content:
-      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nVIIe siècle\n681 : Second fact !\n\n\nArt, culture et religion",
+      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nVIIe siècle\n681 : Second fact !\n\n\nArt, culture et religion\nother stuff",
   };
 
   const facts: Array<Fact> = await extractFactsFromWikipediaPage(wikipediaPage);
@@ -55,7 +55,7 @@ it("should extract multiple facts from a wikipedia page from the 'Événement' p
   const wikipediaPage: WikipediaPage = {
     title: "one fact page",
     content:
-      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nVIIe siècle\n681 : Second fact !\n1792 : third.\n\n\nArt, culture et religion",
+      "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nVIIe siècle\n681 : Second fact !\n1792 : third.\n\n\nArt, culture et religion\nother stuff",
   };
 
   const facts: Array<Fact> = await extractFactsFromWikipediaPage(wikipediaPage);
