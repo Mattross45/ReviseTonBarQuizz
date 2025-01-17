@@ -167,7 +167,7 @@ describe("multiple wikipedia pages", () => {
     const wikipediaPage2: WikipediaPage = {
       title: "page 2",
       content:
-        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n300 : second page\n\n\nArt, culture et religion\nother stuff",
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n60 : second page\n\n\nArt, culture et religion\nother stuff",
     };
 
     const facts: Array<Fact> = extractFactsFromWikipediaPages([
@@ -177,7 +177,35 @@ describe("multiple wikipedia pages", () => {
 
     expect(facts).toEqual([
       {
-        date: "300",
+        date: "60",
+        factContent: "second page",
+      },
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+    ]);
+  });
+  it("should return result ordered by date, even with other stuff written in date", () => {
+    const wikipediaPage1: WikipediaPage = {
+      title: "page 1",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion\nother stuff",
+    };
+    const wikipediaPage2: WikipediaPage = {
+      title: "page 2",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n60 (a very important year): second page\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPages([
+      wikipediaPage1,
+      wikipediaPage2,
+    ]);
+
+    expect(facts).toEqual([
+      {
+        date: "60 (a very important year)",
         factContent: "second page",
       },
       {

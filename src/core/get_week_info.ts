@@ -64,15 +64,23 @@ export function extractFactsFromWikipediaPage(
   return facts;
 }
 
+function extractFirstYear(text: string): number {
+  const match = text.match(/-?\d+/);
+  return match ? parseInt(match[0], 10) : Infinity;
+}
+
 export function extractFactsFromWikipediaPages(
   pages: Array<WikipediaPage>
 ): Array<Fact> {
   const facts = pages.flatMap((page) => extractFactsFromWikipediaPage(page));
   return facts.sort((a, b) => {
-    if (a.date < b.date) {
+    const yearA = extractFirstYear(a.date);
+    const yearB = extractFirstYear(b.date);
+
+    if (yearA < yearB) {
       return -1;
     }
-    if (a.date > b.date) {
+    if (yearA > yearB) {
       return 1;
     }
     return 0;
