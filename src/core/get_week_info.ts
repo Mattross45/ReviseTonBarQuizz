@@ -15,8 +15,11 @@ export function extractFactsFromWikipediaPage(
   const eventsTitlePararaph = paragraphs.findIndex(
     (element) => element === "Événements"
   );
-  const cultureTitlePararaph = paragraphs.findIndex((element) =>
-    element.includes("Art, culture et religion")
+
+  const cultureTitlePararaph = paragraphs.findIndex(
+    (element) =>
+      element.includes("Art, culture et religion") ||
+      element.includes("Arts, culture et religion")
   );
 
   const factParagraphs = paragraphs.splice(
