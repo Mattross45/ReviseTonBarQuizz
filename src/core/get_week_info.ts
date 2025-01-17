@@ -40,5 +40,13 @@ export function extractFactsFromWikipediaPages(
   pages: Array<WikipediaPage>
 ): Array<Fact> {
   const facts = pages.flatMap((page) => extractFactsFromWikipediaPage(page));
-  return facts;
+  return facts.sort((a, b) => {
+    if (a.date < b.date) {
+      return -1;
+    }
+    if (a.date > b.date) {
+      return 1;
+    }
+    return 0;
+  });
 }

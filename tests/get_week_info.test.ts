@@ -110,4 +110,60 @@ describe("multiple wikipedia pages", () => {
       },
     ]);
   });
+  it("should return result ordered by date", () => {
+    const wikipediaPage1: WikipediaPage = {
+      title: "page 1",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion\nother stuff",
+    };
+    const wikipediaPage2: WikipediaPage = {
+      title: "page 2",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n300 : second page\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPages([
+      wikipediaPage1,
+      wikipediaPage2,
+    ]);
+
+    expect(facts).toEqual([
+      {
+        date: "300",
+        factContent: "second page",
+      },
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+    ]);
+  });
+  it("should return result ordered by date, even if bc", () => {
+    const wikipediaPage1: WikipediaPage = {
+      title: "page 1",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion\nother stuff",
+    };
+    const wikipediaPage2: WikipediaPage = {
+      title: "page 2",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n-300 : second page\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPages([
+      wikipediaPage1,
+      wikipediaPage2,
+    ]);
+
+    expect(facts).toEqual([
+      {
+        date: "-300",
+        factContent: "second page",
+      },
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+    ]);
+  });
 });
