@@ -35,3 +35,10 @@ export function extractFactsFromWikipediaPage(
 
   return facts;
 }
+
+export function extractFactsFromWikipediaPages(
+  pages: Array<WikipediaPage>
+): Array<Fact> {
+  const facts = pages.flatMap((page) => extractFactsFromWikipediaPage(page));
+  return facts;
+}

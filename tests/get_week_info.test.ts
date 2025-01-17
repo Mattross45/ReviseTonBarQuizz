@@ -1,5 +1,8 @@
 import { expect, it, describe } from "vitest";
-import { extractFactsFromWikipediaPage } from "@/core/get_week_info";
+import {
+  extractFactsFromWikipediaPage,
+  extractFactsFromWikipediaPages,
+} from "@/core/get_week_info";
 import type { WikipediaPage, Fact } from "@/core/get_week_info";
 
 describe("single wikipedia page", () => {
@@ -73,6 +76,37 @@ describe("single wikipedia page", () => {
       {
         date: "1792",
         factContent: "third.",
+      },
+    ]);
+  });
+});
+
+describe("multiple wikipedia pages", () => {
+  it("should work on mulitple wikipedia pages", () => {
+    const wikipediaPage1: WikipediaPage = {
+      title: "page 1",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\nArt, culture et religion\nother stuff",
+    };
+    const wikipediaPage2: WikipediaPage = {
+      title: "page 2",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n687 : second page\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPages([
+      wikipediaPage1,
+      wikipediaPage2,
+    ]);
+
+    expect(facts).toEqual([
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+      {
+        date: "687",
+        factContent: "second page",
       },
     ]);
   });
