@@ -18,20 +18,48 @@ export function extractFactsFromWikipediaPage(
   const cultureTitlePararaph = paragraphs.findIndex((element) =>
     element.includes("Art, culture et religion")
   );
-  const factParagraphs = paragraphs
-    .splice(eventsTitlePararaph + 1, cultureTitlePararaph - 1)
-    .join("\n");
 
-  const factsWithDates = factParagraphs.split("\n");
-  const facts = factsWithDates
-    .filter((factWithDate) => factWithDate.includes(":"))
-    .map((factWithDate) => {
+  const factParagraphs = paragraphs.splice(
+    eventsTitlePararaph + 1,
+    cultureTitlePararaph - 2
+  );
+
+  const factsWithDates = factParagraphs.flatMap((p) => p.split("\n").splice(1));
+
+  const facts: Array<Fact> = [];
+
+  let current_date = null;
+
+  for (let index = 0; index < factsWithDates.length; index++) {
+    const factWithDate = factsWithDates[index];
+
+    if (factWithDate == "") continue;
+
+    // single line fact
+    if (factWithDate.includes(":") && factWithDate.split(":")[1].trim() != "") {
       const splitFactWithDates = factWithDate.split(":");
-      return {
+
+      facts.push({
         date: splitFactWithDates[0].trim(),
         factContent: splitFactWithDates[1].trim(),
-      };
-    });
+      });
+
+      current_date = null;
+    }
+
+    // start a multiline multiline
+    if (factWithDate.includes(":") && factWithDate.split(":")[1].trim() == "") {
+      current_date = factWithDate.split(":")[0].trim();
+    }
+
+    // if in multiline
+    if (!factWithDate.includes(":") && current_date != null) {
+      facts.push({
+        date: current_date,
+        factContent: factWithDate,
+      });
+    }
+  }
 
   return facts;
 }

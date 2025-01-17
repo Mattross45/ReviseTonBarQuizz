@@ -79,6 +79,54 @@ describe("single wikipedia page", () => {
       },
     ]);
   });
+  it("should handle multiple events per date, multiline at the end", () => {
+    const wikipediaPage: WikipediaPage = {
+      title: "one fact page",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nVe siècle\n475 : This is our fact\n\n\n\n2022 :\nDébut des manifestations\nle premier ministre remet sa démission.\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPage(wikipediaPage);
+
+    expect(facts).toEqual([
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+      {
+        date: "2022",
+        factContent: "Début des manifestations",
+      },
+      {
+        date: "2022",
+        factContent: "le premier ministre remet sa démission.",
+      },
+    ]);
+  });
+  it("should handle multiple events per date, multiline in the middle", () => {
+    const wikipediaPage: WikipediaPage = {
+      title: "one fact page",
+      content:
+        "Blabla du début\n\n\nÉvénements\n\n\nIer siècle\n33 :\nDébut des manifestations\nle premier ministre remet sa démission.\n\n\nVe siècle\n475 : This is our fact\n\n\n\n\n\nArt, culture et religion\nother stuff",
+    };
+
+    const facts: Array<Fact> = extractFactsFromWikipediaPage(wikipediaPage);
+
+    expect(facts).toEqual([
+      {
+        date: "33",
+        factContent: "Début des manifestations",
+      },
+      {
+        date: "33",
+        factContent: "le premier ministre remet sa démission.",
+      },
+      {
+        date: "475",
+        factContent: "This is our fact",
+      },
+    ]);
+  });
 });
 
 describe("multiple wikipedia pages", () => {
