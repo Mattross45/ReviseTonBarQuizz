@@ -1,12 +1,9 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Checkbox } from "@/components/ui/checkbox";
-import { extractFactsFromWikipediaPage } from "@/core/get_week_info";
-import { fetchWikipediaPage } from "@/core/wikipediaService";
+import { fetchWeekFacts } from "@/core/wikipediaService";
 
 export default async function Home() {
-  const page = await fetchWikipediaPage("2_janvier");
-
-  const facts = extractFactsFromWikipediaPage(page);
+  const facts = await fetchWeekFacts();
 
   return (
     <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

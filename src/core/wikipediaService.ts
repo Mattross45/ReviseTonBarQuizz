@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { WikipediaPage } from "./get_week_info";
+import {
+  extractFactsFromWikipediaPages,
+  Fact,
+  WikipediaPage,
+} from "./get_week_info";
+import { getWeekInFrench } from "./date_utils";
 
 const API_URL = "http://fr.wikipedia.org/w/api.php";
 const USER_AGENT = "https://github.com/Mattross45/ReviseTonBarQuizz";
@@ -17,9 +22,7 @@ const wikipediaResponseShema = z.object({
   }),
 });
 
-export async function fetchWikipediaPage(
-  title: string
-): Promise<WikipediaPage> {
+async function fetchWikipediaPage(title: string): Promise<WikipediaPage> {
   const url = `${API_URL}?action=query&titles=${title}&format=json&explaintext=1&exsectionformat=plain&prop=extracts`;
   const options = {
     method: "GET",
@@ -42,4 +45,20 @@ export async function fetchWikipediaPage(
   };
 
   return wikipediaPage;
+}
+
+export async function fetchWeekFacts(): Promise<Array<Fact>> {
+  const today = new Date();
+
+  const daysOfTheWeek = getWeekInFrench(today);
+
+  const wikipediaPagesOfTheWeek = await Promise.all(
+    daysOfTheWeek.map(async (day) => await fetchWikipediaPage(day))
+  );
+
+  const factsOfTheWeek = extractFactsFromWikipediaPages(
+    wikipediaPagesOfTheWeek
+  );
+
+  return factsOfTheWeek;
 }
