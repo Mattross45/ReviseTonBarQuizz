@@ -42,6 +42,7 @@ export default function FactList({ facts }: { facts: Array<Fact> }) {
                   !factsWithChecked[index].checked;
                 setFactsWithChecked(factsWithChecked);
               }}
+              disabled={showOnlySelected}
             />
             <label htmlFor={`${index}`}>
               {fact.date} : {fact.factContent}
