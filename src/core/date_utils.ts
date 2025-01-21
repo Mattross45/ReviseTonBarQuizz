@@ -1,3 +1,14 @@
+export function getNextMondayMidnight(date: Date): Date {
+  const dayOfWeek = date.getDay();
+  // x mod 7 is ((x % 7) + 7) % 7; to handle negative numbers
+  const daysToSunday = (((dayOfWeek * -1) % 7) + 7) % 7;
+
+  // date set to sunday
+  date.setDate(date.getDate() + daysToSunday);
+  // monday at 00h00
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+}
+
 export function getWeekInFrench(date: Date): string[] {
   const frenchMonths = [
     "janvier",
