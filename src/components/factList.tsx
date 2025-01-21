@@ -5,17 +5,15 @@ import { ModeToggle } from "./mode-toggle";
 import { Toggle } from "./ui/toggle";
 import { Fact } from "@/core/get_week_info";
 import { Checkbox } from "./ui/checkbox";
+import { useAtom } from "jotai";
+import { factsAtom } from "@/app/facts-storage";
 
 export default function FactList({ facts }: { facts: Array<Fact> }) {
-  const [factsWithChecked, setFactsWithChecked] = useState(
-    facts.map((fact) => ({ ...fact, checked: false }))
-  );
+  const [factsToRemember, setFactsToRemember] = useAtom(factsAtom);
 
   const [showOnlySelected, setShowOnlySelected] = useState(false);
 
-  const factsToShow = showOnlySelected
-    ? factsWithChecked.filter((fact) => fact.checked)
-    : factsWithChecked;
+  const factsToShow = showOnlySelected ? factsToRemember : facts;
 
   return (
     <>
@@ -36,11 +34,33 @@ export default function FactList({ facts }: { facts: Array<Fact> }) {
           <div key={index} className="flex items-center space-x-2">
             <Checkbox
               id={`${index}`}
+              checked={factsToRemember.some(
+                (factToRemember) =>
+                  fact.date === factToRemember.date &&
+                  fact.factContent === factToRemember.factContent
+              )}
               className="self-start"
-              onCheckedChange={() => {
-                factsWithChecked[index].checked =
-                  !factsWithChecked[index].checked;
-                setFactsWithChecked(factsWithChecked);
+              onCheckedChange={(checked) => {
+                let newChecked = checked.valueOf();
+                if (typeof newChecked === "string") {
+                  newChecked = false;
+                }
+
+                const checkChangedFact = factsToShow[index];
+
+                if (!newChecked) {
+                  setFactsToRemember(
+                    factsToRemember.filter((fact) => {
+                      return (
+                        fact.date != checkChangedFact.date ||
+                        fact.factContent != checkChangedFact.factContent
+                      );
+                    })
+                  );
+                  return;
+                }
+
+                setFactsToRemember([...factsToRemember, checkChangedFact]);
               }}
               disabled={showOnlySelected}
             />
