@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { useAtom } from "jotai";
 import { factsAtom } from "../facts-storage";
+import AnkiCard from "@/components/anki-card";
 
 export default function ReviseBoard() {
   const [factsToRemember] = useAtom(factsAtom);
@@ -19,8 +20,7 @@ export default function ReviseBoard() {
         <CarouselContent>
           {factsToRemember.map((fact, index) => (
             <CarouselItem key={index}>
-              <p>{fact.date}</p>
-              <p>{fact.factContent}</p>
+              <AnkiCard front={fact.date} back={fact.factContent} />
             </CarouselItem>
           ))}
         </CarouselContent>
