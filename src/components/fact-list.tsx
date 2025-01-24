@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ModeToggle } from "./mode-toggle";
 import { Toggle } from "./ui/toggle";
-import { Fact } from "@/core/get_week_info";
+import { Fact } from "@/core/get-week-info";
 import { Checkbox } from "./ui/checkbox";
 import { useAtom } from "jotai";
 import { factsAtom } from "@/app/facts-storage";

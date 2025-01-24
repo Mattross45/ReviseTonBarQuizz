@@ -1,4 +1,4 @@
-import { getWeekInFrench } from "@/core/date_utils";
+import { getWeekInFrench } from "@/core/date-utils";
 import { describe, expect, it } from "vitest";
 
 describe("getWeekInFrench", () => {

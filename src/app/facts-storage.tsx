@@ -1,5 +1,5 @@
-import { getNextMondayMidnight } from "@/core/date_utils";
-import { Fact } from "@/core/get_week_info";
+import { getNextMondayMidnight } from "@/core/date-utils";
+import { Fact } from "@/core/get-week-info";
 import { atomWithStorage } from "jotai/utils";
 
 const create_facts_atom = () => {

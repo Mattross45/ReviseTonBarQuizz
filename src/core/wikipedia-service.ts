@@ -3,8 +3,8 @@ import {
   extractFactsFromWikipediaPages,
   Fact,
   WikipediaPage,
-} from "./get_week_info";
-import { getWeekInFrench } from "./date_utils";
+} from "./get-week-info";
+import { getWeekInFrench } from "./date-utils";
 
 const API_URL = "http://fr.wikipedia.org/w/api.php";
 const USER_AGENT = "https://github.com/Mattross45/ReviseTonBarQuizz";

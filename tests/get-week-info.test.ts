@@ -2,8 +2,8 @@ import { expect, it, describe } from "vitest";
 import {
   extractFactsFromWikipediaPage,
   extractFactsFromWikipediaPages,
-} from "@/core/get_week_info";
-import type { WikipediaPage, Fact } from "@/core/get_week_info";
+} from "@/core/get-week-info";
+import type { WikipediaPage, Fact } from "@/core/get-week-info";
 
 describe("single wikipedia page", () => {
   it("should extract no facts from an empty wikipedia page", () => {

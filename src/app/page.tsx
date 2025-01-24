@@ -1,5 +1,5 @@
-import FactList from "@/components/factList";
-import { fetchWeekFacts } from "@/core/wikipediaService";
+import FactList from "@/components/fact-list";
+import { fetchWeekFacts } from "@/core/wikipedia-service";
 
 export default async function Home() {
   const facts = await fetchWeekFacts();
