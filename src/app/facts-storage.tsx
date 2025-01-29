@@ -5,6 +5,7 @@ import { atomWithStorage } from "jotai/utils";
 const create_facts_atom = () => {
   const factsAtom = atomWithStorage<Array<Fact>>("facts", []);
   factsAtom.unstable_onInit = () => {
+    if (typeof window == "undefined") return;
     const now = new Date().getTime();
     const reset_time = localStorage.getItem("facts_reset_timestamp");
 
