@@ -16,15 +16,13 @@ export function extractFactsFromWikipediaPage(
     (element) => element === "Événements"
   );
 
-  const cultureTitlePararaph = paragraphs.findIndex(
-    (element) =>
-      element.includes("Art, culture et religion") ||
-      element.includes("Arts, culture et religion")
+  const naissanceTitlePararaph = paragraphs.findIndex((element) =>
+    element.includes("Naissances")
   );
 
   const factParagraphs = paragraphs.splice(
     eventsTitlePararaph + 1,
-    cultureTitlePararaph - 2
+    naissanceTitlePararaph - 2
   );
 
   const factsWithDates = factParagraphs.flatMap((p) => p.split("\n").splice(1));
@@ -39,7 +37,11 @@ export function extractFactsFromWikipediaPage(
     if (factWithDate == "") continue;
 
     // single line fact
-    if (factWithDate.includes(":") && factWithDate.split(":")[1].trim() != "") {
+    if (
+      factWithDate.includes(":") &&
+      factWithDate.match(/-?\d+/) != null &&
+      factWithDate.split(":")[1].trim() != ""
+    ) {
       const splitFactWithDates = factWithDate.split(":");
 
       facts.push({
