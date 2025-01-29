@@ -10,12 +10,20 @@ import {
 import { useAtom } from "jotai";
 import { factsAtom } from "../facts-storage";
 import AnkiCard from "@/components/anki-card";
+import Link from "next/link";
 
 export default function ReviseBoard() {
   const [factsToRemember] = useAtom(factsAtom);
 
+  if (factsToRemember.length == 0)
+    return (
+      <div>
+        No facts to remember go <Link href="/">here</Link> to choose some !
+      </div>
+    );
+
   return (
-    <div className="">
+    <>
       <Carousel>
         <CarouselContent>
           {factsToRemember.map((fact, index) => (
@@ -27,6 +35,6 @@ export default function ReviseBoard() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-    </div>
+    </>
   );
 }

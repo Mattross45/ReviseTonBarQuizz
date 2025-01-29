@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ModeToggle } from "./mode-toggle";
 import { Toggle } from "./ui/toggle";
 import { Fact } from "@/core/get-week-info";
 import { Checkbox } from "./ui/checkbox";
@@ -16,19 +15,16 @@ export default function FactList({ facts }: { facts: Array<Fact> }) {
   const factsToShow = showOnlySelected ? factsToRemember : facts;
 
   return (
-    <>
-      <div className="flex gap-8">
-        <ModeToggle />
-        <Toggle
-          size="lg"
-          aria-label="Toggle selected"
-          onPressedChange={(pressed) => {
-            setShowOnlySelected(pressed);
-          }}
-        >
-          Show only selected
-        </Toggle>
-      </div>
+    <div className="flex gap-8 flex-col items-center justify-start h-full">
+      <Toggle
+        size="lg"
+        aria-label="Toggle selected"
+        onPressedChange={(pressed) => {
+          setShowOnlySelected(pressed);
+        }}
+      >
+        Show only selected
+      </Toggle>
       <div className="flex flex-col items-start">
         {factsToShow.map((fact, index) => (
           <div key={index} className="flex items-center space-x-2">
@@ -70,6 +66,6 @@ export default function FactList({ facts }: { facts: Array<Fact> }) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

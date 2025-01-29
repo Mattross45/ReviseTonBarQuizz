@@ -13,24 +13,16 @@ export default function AnkiCard({
   const [isFront, setIsFront] = useState(true);
 
   return (
-    <div>
-      {isFront ? (
-        <Card
-          onClick={() => {
-            setIsFront(!isFront);
-          }}
-        >
-          <CardContent>{front}</CardContent>
-        </Card>
-      ) : (
-        <Card
-          onClick={() => {
-            setIsFront(!isFront);
-          }}
-        >
-          <CardContent>{back}</CardContent>
-        </Card>
-      )}
+    <div className="text-center">
+      <Card
+        onClick={() => {
+          setIsFront(!isFront);
+        }}
+      >
+        <CardContent className="text-center">
+          {isFront ? front : back}
+        </CardContent>
+      </Card>
     </div>
   );
 }
