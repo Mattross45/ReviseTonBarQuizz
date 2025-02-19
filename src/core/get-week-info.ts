@@ -3,29 +3,74 @@ export type WikipediaPage = {
   content: string;
 };
 
+export type Category =
+  | "Événements"
+  | "Art, Culture et Religion"
+  | "Sciences et Technique"
+  | "Économie et Société";
+
 export type Fact = {
   date: string;
   factContent: string;
+  category: Category;
 };
+
+function getCategoryToIndex(paragraphs: string[]): Record<Category, number> {
+  const eventsTitlePararaph = paragraphs.findIndex(
+    (element) => element === "Événements"
+  );
+  const artsCultureReligionTitlePararaph = paragraphs.findIndex((element) =>
+    element.toLowerCase().includes("art, culture et religion")
+  );
+  const scienceTechniqueTitlePararaph = paragraphs.findIndex((element) =>
+    element.toLowerCase().includes("sciences et technique")
+  );
+  const ecionopmieSocieteTitlePararaph = paragraphs.findIndex((element) =>
+    element.toLowerCase().includes("économie et société")
+  );
+
+  return {
+    Événements: eventsTitlePararaph,
+    "Sciences et Technique": scienceTechniqueTitlePararaph,
+    "Art, Culture et Religion": artsCultureReligionTitlePararaph,
+    "Économie et Société": ecionopmieSocieteTitlePararaph,
+  };
+}
 
 export function extractFactsFromWikipediaPage(
   page: WikipediaPage
 ): Array<Fact> {
   const paragraphs = page.content.split("\n\n\n");
-  const eventsTitlePararaph = paragraphs.findIndex(
-    (element) => element === "Événements"
-  );
+  const categoryToIndex = getCategoryToIndex(paragraphs);
 
   const naissanceTitlePararaph = paragraphs.findIndex((element) =>
     element.includes("Naissances")
   );
 
-  const factParagraphs = paragraphs.splice(
-    eventsTitlePararaph + 1,
-    naissanceTitlePararaph - 2
-  );
+  const factParagraphs = paragraphs
+    .map((value, index) => {
+      const category =
+        (Object.entries(categoryToIndex).find(
+          ([_, titleIndex]) => index === titleIndex
+        )?.[0] as Category) || ("Événements" as Category);
 
-  const factsWithDates = factParagraphs.flatMap((p) => p.split("\n").splice(1));
+      return {
+        category,
+        line: value,
+      };
+    })
+    .filter((_, index) => {
+      return (
+        index > categoryToIndex["Événements"] && index < naissanceTitlePararaph
+      );
+    });
+
+  const factsWithDates = factParagraphs.flatMap(({ category, line }) =>
+    line
+      .split("\n")
+      .splice(1)
+      .map((value) => ({ category: category, line: value }))
+  );
 
   const facts: Array<Fact> = [];
 
@@ -34,34 +79,39 @@ export function extractFactsFromWikipediaPage(
   for (let index = 0; index < factsWithDates.length; index++) {
     const factWithDate = factsWithDates[index];
 
-    if (factWithDate == "") continue;
+    if (factWithDate.line == "") continue;
 
     // single line fact
     if (
-      factWithDate.includes(":") &&
-      factWithDate.match(/-?\d+/) != null &&
-      factWithDate.split(":")[1].trim() != ""
+      factWithDate.line.includes(":") &&
+      factWithDate.line.match(/-?\d+/) != null &&
+      factWithDate.line.split(":")[1].trim() != ""
     ) {
-      const splitFactWithDates = factWithDate.split(":");
+      const splitFactWithDates = factWithDate.line.split(":");
 
       facts.push({
         date: splitFactWithDates[0].trim(),
         factContent: splitFactWithDates[1].trim(),
+        category: factWithDate.category,
       });
 
       current_date = null;
     }
 
     // start a multiline multiline
-    if (factWithDate.includes(":") && factWithDate.split(":")[1].trim() == "") {
-      current_date = factWithDate.split(":")[0].trim();
+    if (
+      factWithDate.line.includes(":") &&
+      factWithDate.line.split(":")[1].trim() == ""
+    ) {
+      current_date = factWithDate.line.split(":")[0].trim();
     }
 
     // if in multiline
-    if (!factWithDate.includes(":") && current_date != null) {
+    if (!factWithDate.line.includes(":") && current_date != null) {
       facts.push({
         date: current_date,
-        factContent: factWithDate,
+        factContent: factWithDate.line,
+        category: factWithDate.category,
       });
     }
   }

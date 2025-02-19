@@ -30,6 +30,7 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
     ]);
   });
@@ -47,10 +48,12 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "708",
         factContent: "élection du successeur du pape Jean VII",
+        category: "Art, Culture et Religion",
       },
     ]);
   });
@@ -68,18 +71,22 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "708",
         factContent: "élection du successeur du pape Jean VII",
+        category: "Art, Culture et Religion",
       },
       {
         date: "1971",
         factContent: "inauguration du barrage d'Assouan en Égypte.",
+        category: "Sciences et Technique",
       },
       {
         date: "1790",
         factContent: "à Paris, l'Assemblée constituante fixe",
+        category: "Économie et Société",
       },
     ]);
   });
@@ -97,10 +104,12 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "681",
         factContent: "Second fact !",
+        category: "Événements",
       },
     ]);
   });
@@ -118,14 +127,17 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "681",
         factContent: "Second fact !",
+        category: "Événements",
       },
       {
         date: "1792",
         factContent: "third.",
+        category: "Événements",
       },
     ]);
   });
@@ -142,14 +154,17 @@ describe("single wikipedia page", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "2022",
         factContent: "Début des manifestations",
+        category: "Événements",
       },
       {
         date: "2022",
         factContent: "le premier ministre remet sa démission.",
+        category: "Événements",
       },
     ]);
   });
@@ -166,14 +181,17 @@ describe("single wikipedia page", () => {
       {
         date: "33",
         factContent: "Début des manifestations",
+        category: "Événements",
       },
       {
         date: "33",
         factContent: "le premier ministre remet sa démission.",
+        category: "Événements",
       },
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
     ]);
   });
@@ -201,10 +219,12 @@ describe("multiple wikipedia pages", () => {
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
       {
         date: "687",
         factContent: "second page",
+        category: "Événements",
       },
     ]);
   });
@@ -229,10 +249,12 @@ describe("multiple wikipedia pages", () => {
       {
         date: "60",
         factContent: "second page",
+        category: "Événements",
       },
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
     ]);
   });
@@ -257,10 +279,12 @@ describe("multiple wikipedia pages", () => {
       {
         date: "60 (a very important year)",
         factContent: "second page",
+        category: "Événements",
       },
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
     ]);
   });
@@ -285,10 +309,12 @@ describe("multiple wikipedia pages", () => {
       {
         date: "-300",
         factContent: "second page",
+        category: "Événements",
       },
       {
         date: "475",
         factContent: "This is our fact",
+        category: "Événements",
       },
     ]);
   });
