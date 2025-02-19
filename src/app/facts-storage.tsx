@@ -9,14 +9,6 @@ const create_facts_atom = () => {
     const now = new Date().getTime();
     const reset_time = localStorage.getItem("facts_reset_timestamp");
 
-    if (reset_time != null) {
-      const momentWhenToReset = getNextMondayMidnight(new Date()).getTime();
-      localStorage.setItem(
-        "facts_reset_timestamp",
-        JSON.stringify(momentWhenToReset)
-      );
-    }
-
     if (reset_time != null && now > JSON.parse(reset_time)) {
       localStorage.removeItem("facts");
       const momentWhenToReset = getNextMondayMidnight(new Date()).getTime();
@@ -25,6 +17,12 @@ const create_facts_atom = () => {
         JSON.stringify(momentWhenToReset)
       );
     }
+
+    const momentWhenToReset = getNextMondayMidnight(new Date()).getTime();
+    localStorage.setItem(
+      "facts_reset_timestamp",
+      JSON.stringify(momentWhenToReset)
+    );
   };
   return factsAtom;
 };
